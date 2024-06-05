@@ -27,7 +27,7 @@ const getStoreItem = async (itemId) => {
 
 const UpdateItem = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { itemId } = useParams();
   const [itemName, setItemName] = useState("");
   const [itemDescription, setItemDescription] = useState("");
   const [loading, setLoading] = useState(true);
@@ -36,7 +36,7 @@ const UpdateItem = () => {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const item = await getStoreItem(id);
+        const item = await getStoreItem(itemId);
         setItemName(item.name);
         setItemDescription(item.description);
         setLoading(false);
@@ -47,7 +47,7 @@ const UpdateItem = () => {
     };
 
     fetchItem();
-  }, [id]);
+  }, [itemId]);
 
   const handleUpdateItem = async () => {
     const updatedItem = {
@@ -55,7 +55,7 @@ const UpdateItem = () => {
       description: itemDescription,
     };
     try {
-      const itemDoc = doc(firestore, "storeItems", id);
+      const itemDoc = doc(firestore, "storeItems", itemId);
       await updateDoc(itemDoc, updatedItem);
       setItemName("");
       setItemDescription("");

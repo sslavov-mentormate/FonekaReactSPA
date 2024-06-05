@@ -1,35 +1,21 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Container, Box } from "@mui/material";
-import { addDoc, collection } from "firebase/firestore";
-import firestore from "../../Firebase";
 
 const AddItem = () => {
   const [itemName, setItemName] = useState("");
   const [itemDescription, setItemDescription] = useState("");
   const navigate = useNavigate();
 
-  const handleAddItem = async (event) => {
-    event.preventDefault();
-    try {
-      const newItem = { name: itemName, description: itemDescription };
-      const docRef = await addDoc(collection(firestore, "storeItems"), newItem);
-      setItemName("");
-      setItemDescription("");
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <Container maxWidth="sm">
       <Box mt={3}>
         <Typography variant="h4">Add new item</Typography>
-        <form onSubmit={handleAddItem}>
+        <Form method="post">
           <Box mt={2}>
             <TextField
               id="itemName"
+              name="name"
               label="Name"
               variant="outlined"
               fullWidth
@@ -40,6 +26,7 @@ const AddItem = () => {
           <Box mt={2}>
             <TextField
               id="itemDescription"
+              name="description"
               label="Description"
               variant="outlined"
               fullWidth
@@ -62,7 +49,7 @@ const AddItem = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => navigate("/")}
+              onClick={() => navigate(-1)}
             >
               Cancel
             </Button>
@@ -75,7 +62,7 @@ const AddItem = () => {
               Add item
             </Button>
           </Box>
-        </form>
+        </Form>
       </Box>
     </Container>
   );
